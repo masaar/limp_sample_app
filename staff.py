@@ -41,7 +41,6 @@ class Staff(BaseModule):
 
 	def pre_create(self, session, query, doc):
 		doc['photo'] = doc['photo'][0]
-		doc['photo']['content'] = binary.Binary(bytes(doc['photo']['content'].values()))
 		return (session, query, doc)
 	
 	def retrieve_photo(self, skip_events=[], env={}, session=None, query={}, doc={}):
