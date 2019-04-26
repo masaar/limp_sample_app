@@ -11,9 +11,9 @@ class Staff(BaseModule):
 		'name':'locale',
 		'jobtitle':'locale',
 		'bio':'locale',
-		'create_time':'create_time',
-		'diff':'diff'
+		'create_time':'create_time'
 	}
+	diff = True
 	extns = {
 		'user':['user', ['*']]
 	}
