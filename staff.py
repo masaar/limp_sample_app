@@ -19,7 +19,7 @@ class Staff(BaseModule):
 	}
 	methods = {
 		'read':{
-			'permissions':[['admin', {}, {}], ['read', {}, {}]]
+			'permissions':[['admin', {}, {}], ['*', {}, {}]]
 		},
 		'create':{
 			'permissions':[['create', {}, {'user':'$__user'}]]
@@ -32,35 +32,9 @@ class Staff(BaseModule):
 			'permissions':[['delete', {}, {}]],
 			'query_args':['!_id']
 		},
-		'retrieve_photo': {
+		'retrieve_file': {
 			'permissions': [['*', {}, {}]],
 			'query_args': ['!_id', '!var'],
 			'get_method': True
 		}
 	}
-
-	def pre_create(self, session, query, doc):
-		doc['photo'] = doc['photo'][0]
-		return (session, query, doc)
-	
-	def retrieve_photo(self, skip_events=[], env={}, session=None, query={}, doc={}):
-		del query['var']
-		results = self.methods['read'](skip_events=[Event.__PERM__, Event.__ON__], session=session, query=query)
-		if not results['args']['count']:
-			return {
-				'status': 404
-			}
-		staff = results['args']['docs'][0]
-		if not staff.photo:
-			return {
-				'status': 404
-			}
-		return {
-			'status': 291,
-			'msg': staff.photo['content'],
-			'args': {
-				'name': staff.photo['name'],
-				'type': staff.photo['type'],
-				'size': staff.photo['size']
-			}
-		}
