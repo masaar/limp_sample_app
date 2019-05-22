@@ -1,7 +1,4 @@
 from base_module import BaseModule
-from event import Event
-
-from bson import binary
 
 class Staff(BaseModule):
 	collection = 'staff'

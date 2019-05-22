@@ -18,21 +18,20 @@ class Blog(BaseModule):
 		'tags':['str'],
 		'cat':'id',
 		'access':'access',
-		'create_time':'time',
-		'expiry_time':'time'
+		'create_time':'time'
 	}
 	diff = True
-	optional_attrs = ['subtitle', 'tags', 'permalink', 'access', 'expiry_time']
+	optional_attrs = ['subtitle', 'tags', 'permalink', 'access']
 	extns = {
 		'user':['user', ['*']],
 		'cat':['blog_cat', ['*']]
 	}
 	methods = {
 		'read':{
-			'permissions':[['read', {}, {}], ['*', {'__OR:expiry_time':{'val':'$__time', 'oper':'$gt'}, '__OR:user':'$__user', 'access':'$__access'}, {}]]
+			'permissions':[['read', {}, {}], ['*', {}, {}]]
 		},
 		'create':{
-			'permissions':[['admin', {}, {}], ['create', {}, {'user':'$__user'}]]
+			'permissions':[['admin', {}, {}], ['create', {}, {}]]
 		},
 		'update':{
 			'permissions':[['admin', {}, {}], ['update', {'user':'$__user'}, {'user':None}]],
