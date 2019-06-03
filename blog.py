@@ -70,7 +70,7 @@ class BlogCat(BaseModule):
 			'permissions':[['*', {}, {}]]
 		},
 		'create':{
-			'permissions':[['create', {}, {'user':'$__user'}]]
+			'permissions':[['create', {}, {}]]
 		},
 		'update':{
 			'permissions':[['update', {}, {}]],

@@ -19,7 +19,7 @@ class Staff(BaseModule):
 			'permissions':[['admin', {}, {}], ['*', {}, {}]]
 		},
 		'create':{
-			'permissions':[['create', {}, {'user':'$__user'}]]
+			'permissions':[['create', {}, {}]]
 		},
 		'update':{
 			'permissions':[['admin', {}, {}], ['update', {'user':'$__user'}, {'user':None}]],
