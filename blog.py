@@ -44,7 +44,7 @@ class Blog(BaseModule):
 	}
 
 	def pre_create(self, skip_events, env, session, query, doc):
-		blog_cat_results = self.modules['blog_cat'].methods['read'](skip_events=[Event.__PERM__], env=env, session=session, query=[[{'_id':doc['cat']}]])
+		blog_cat_results = self.modules['blog_cat'].read(skip_events=[Event.__PERM__], env=env, session=session, query=[[{'_id':doc['cat']}]])
 		if not blog_cat_results.args.count:
 			return {
 				'status':400,
