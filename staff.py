@@ -16,22 +16,23 @@ class Staff(BaseModule):
 	}
 	methods = {
 		'read':{
-			'permissions':[['admin', {}, {}], ['*', {}, {}]]
+			'permissions':[['admin', {}, {}], ['*', {}, {}]],
+			'query_args':['_id']
 		},
 		'create':{
 			'permissions':[['create', {}, {}]]
 		},
 		'update':{
 			'permissions':[['admin', {}, {}], ['update', {'user':'$__user'}, {'user':None}]],
-			'query_args':['!_id']
+			'query_args':['_id']
 		},
 		'delete':{
 			'permissions':[['delete', {}, {}]],
-			'query_args':['!_id']
+			'query_args':['_id']
 		},
 		'retrieve_file': {
 			'permissions': [['*', {}, {}]],
-			'query_args': ['!_id', '!var'],
+			'query_args': ['_id', 'var'],
 			'get_method': True
 		}
 	}

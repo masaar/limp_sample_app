@@ -35,16 +35,16 @@ class Blog(BaseModule):
 		},
 		'update':{
 			'permissions':[['admin', {}, {}], ['update', {'user':'$__user'}, {'user':None}]],
-			'query_args':['!_id']
+			'query_args':['_id']
 		},
 		'delete':{
 			'permissions':[['admin', {}, {}], ['delete', {'user':'$__user'}, {}]],
-			'query_args':['!_id']
+			'query_args':['_id']
 		}
 	}
 
-	def pre_create(self, env, session, query, doc):
-		blog_cat_results = self.modules['blog_cat'].methods['read'](skip_events=[Event.__PERM__], env=env, session=session, query={'_id':{'val':doc['cat']}})
+	def pre_create(self, skip_events, env, session, query, doc):
+		blog_cat_results = self.modules['blog_cat'].methods['read'](skip_events=[Event.__PERM__], env=env, session=session, query=[[{'_id':doc['cat']}]])
 		if not blog_cat_results.args.count:
 			return {
 				'status':400,
@@ -54,7 +54,7 @@ class Blog(BaseModule):
 		if 'subtitle' not in doc.keys(): doc['subtitle'] = {locale:'' for locale in Config.locales}
 		if 'permalink' not in doc.keys(): doc['permalink'] = re.sub(r'\s+', '-', re.sub(r'[^\s\-\w]', '', doc['title'][Config.locale]))
 		if 'tags' not in doc.keys(): doc['tags'] = []
-		return (env, session, query, doc)
+		return (skip_events, env, session, query, doc)
 
 
 class BlogCat(BaseModule):
@@ -74,10 +74,10 @@ class BlogCat(BaseModule):
 		},
 		'update':{
 			'permissions':[['update', {}, {}]],
-			'query_args':['!_id']
+			'query_args':['_id']
 		},
 		'delete':{
 			'permissions':[['delete', {}, {}]],
-			'query_args':['!_id']
+			'query_args':['_id']
 		}
 	}
