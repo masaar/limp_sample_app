@@ -4,17 +4,129 @@ from bson import ObjectId
 
 def config():
 	return {
-		'version':5.4,
-		
+		'version':5.5,
+
 		'envs':{
 			'dev':{
 				'data_server':'mongodb://localhost'
 			},
 			'prod':{
-				'data_server':'mongodb://localhost'
+				'data_server':'$__env.LIMP_CONN_STRING',
+				'data_ssl':True
 			}
 		},
 		'data_name':'limp_data',
 		'locales':['ar_AE', 'en_AE'],
-		'locale':'ar_AE'
+		'locale':'ar_AE',
+
+		'tests':{
+			'auth_as_admin':[
+				{
+					'step':'auth',
+					'var':'email',
+					'val':'ADMIN@LIMP.MASAAR.COM',
+					'hash':'eyJoYXNoIjpbImVtYWlsIiwiQURNSU5ATElNUC5NQVNBQVIuQ09NIiwiX19BRE1JTiJdfQ'
+				}
+			],
+			'create_blog_cat':[
+				{
+					'step':'test',
+					'test':'auth_as_admin'
+				},
+				{
+					'step':'call',
+					'module':'blog_cat',
+					'method':'create',
+					'query':[],
+					'doc':{
+						'title':{'__attr':'locale'},
+						'desc':{'__attr':'locale'}
+					},
+					'acceptance':{
+						'status':200
+					}
+				},
+				{
+					'step':'signout'
+				},
+				{
+					'step':'call',
+					'module':'blog_cat',
+					'method':'read',
+					'query':[],
+					'doc':{},
+					'acceptance':{
+						'status':200,
+						'args.count':1
+					}
+				}
+			],
+			'create_blog_post':[
+				{
+					'step':'test',
+					'test':'create_blog_cat'
+				},
+				{
+					'step':'test',
+					'test':'auth_as_admin'
+				},
+				{
+					'step':'call',
+					'module':'blog',
+					'method':'create',
+					'query':[],
+					'doc':{
+						'status':'published',
+						'title':{'__attr':'locale'},
+						'content':{'__attr':'locale'},
+						'tags':[{'__attr':'str', 'count':5}],
+						'cat':'$__steps:0.steps:1.results.args.docs:0._id'
+					},
+					'acceptance':{
+						'status':200
+					}
+				},
+				{
+					'step':'call',
+					'module':'blog',
+					'method':'create',
+					'query':[],
+					'doc':{
+						'status':'draft',
+						'title':{'__attr':'locale'},
+						'content':{'__attr':'locale'},
+						'tags':[{'__attr':'str', 'count':5}],
+						'cat':'$__steps:0.steps:1.results.args.docs:0._id'
+					},
+					'acceptance':{
+						'status':200
+					}
+				},
+				{
+					'step':'call',
+					'module':'blog',
+					'method':'read',
+					'query':[],
+					'doc':{},
+					'acceptance':{
+						'status':200,
+						'args.count':2
+					}
+				},
+				{
+					'step':'signout'
+				},
+				{
+					'step':'call',
+					'module':'blog',
+					'method':'read',
+					'query':[],
+					'doc':{},
+					'acceptance':{
+						'status':200,
+						'args.count':1
+					}
+				}
+			]
+		}
 	}

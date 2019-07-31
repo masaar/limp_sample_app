@@ -8,12 +8,9 @@ class Staff(BaseModule):
 		'name':'locale',
 		'jobtitle':'locale',
 		'bio':'locale',
-		'create_time':'create_time'
+		'create_time':'datetime'
 	}
 	diff = True
-	extns = {
-		'user':['user', ['*']]
-	}
 	methods = {
 		'read':{
 			'permissions':[['admin', {}, {}], ['*', {}, {}]],

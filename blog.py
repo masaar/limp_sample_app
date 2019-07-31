@@ -10,7 +10,7 @@ class Blog(BaseModule):
 	collection = 'blogs'
 	attrs = {
 		'user':'id',
-		'status':('scheduled', 'draft', 'pending', 'rejected', 'published'),
+		'status':('draft', 'pending', 'rejected', 'published'),
 		'title':'locale',
 		'subtitle':'locale',
 		'permalink':'str',
@@ -18,17 +18,18 @@ class Blog(BaseModule):
 		'tags':['str'],
 		'cat':'id',
 		'access':'access',
-		'create_time':'time'
+		'create_time':'datetime'
 	}
 	diff = True
-	optional_attrs = ['subtitle', 'tags', 'permalink', 'access']
+	defaults = {'tags':[]}
+	unique_attrs = ['permalink']
 	extns = {
-		'user':['user', ['*']],
+		'user':['user', ['name', 'bio']],
 		'cat':['blog_cat', ['*']]
 	}
 	methods = {
 		'read':{
-			'permissions':[['read', {}, {}], ['*', {}, {}]]
+			'permissions':[['read', {}, {}], ['*', {'status':'published', 'access':'$__access'}, {}]]
 		},
 		'create':{
 			'permissions':[['admin', {}, {}], ['create', {}, {}]]
@@ -53,7 +54,12 @@ class Blog(BaseModule):
 			}
 		if 'subtitle' not in doc.keys(): doc['subtitle'] = {locale:'' for locale in Config.locales}
 		if 'permalink' not in doc.keys(): doc['permalink'] = re.sub(r'\s+', '-', re.sub(r'[^\s\-\w]', '', doc['title'][Config.locale]))
-		if 'tags' not in doc.keys(): doc['tags'] = []
+		if 'access' not in doc.keys():
+			doc['access'] = {
+				'anon':True,
+				'users':[],
+				'groups':[]
+			}
 		return (skip_events, env, session, query, doc)
 
 
@@ -67,7 +73,7 @@ class BlogCat(BaseModule):
 	diff = True
 	methods = {
 		'read':{
-			'permissions':[['*', {}, {}]]
+			'permissions':[['read', {}, {}], ['*', {'$attrs':['title', 'desc']}, {}]]
 		},
 		'create':{
 			'permissions':[['create', {}, {}]]
