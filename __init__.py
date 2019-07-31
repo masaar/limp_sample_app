@@ -4,6 +4,8 @@ from bson import ObjectId
 
 def config():
 	return {
+		'version':5.4,
+		
 		'envs':{
 			'dev':{
 				'data_server':'mongodb://localhost'
