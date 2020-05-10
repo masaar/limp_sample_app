@@ -1,0 +1,10 @@
+version: '3.3'
+
+services:
+  limp_app:
+    build: .
+    ports:
+      - "8081:8081"
+    environment:
+      ENV: prod
+      DEBUG: 1
