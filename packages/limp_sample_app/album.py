@@ -9,6 +9,9 @@ class Album(BaseModule):
 	collection = 'albums'
 	attrs = {
 		'user': ATTR.ID(),
+		'code': ATTR.COUNTER(pattern='A$__values:0-$__counters.album_counter', values=[
+			lambda skip_events, env, query, doc: 42
+		]),
 		'name': ATTR.LOCALE(),
 		'desc': ATTR.LOCALE(),
 		'photos': ATTR.LIST(

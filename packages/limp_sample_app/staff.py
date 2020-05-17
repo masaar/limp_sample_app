@@ -8,7 +8,7 @@ class Staff(BaseModule):
 	collection = 'staff'
 	attrs = {
 		'user': ATTR.ID(),
-		'photo': ATTR.FILE(),
+		'photo': ATTR.FILE(types=['image/*']),
 		'name': ATTR.LOCALE(),
 		'jobtitle': ATTR.LOCALE(),
 		'bio': ATTR.LOCALE(),

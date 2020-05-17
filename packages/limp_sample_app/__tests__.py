@@ -6,8 +6,8 @@ auth_as_admin = TEST(
 	[
 		STEP.AUTH(
 			var='email',
-			val='ADMIN@LIMP.MASAAR.COM',
-			hash='eyJoYXNoIjpbImVtYWlsIiwiQURNSU5ATElNUC5NQVNBQVIuQ09NIiwiX19BRE1JTiIsIl9fQU5PTl9UT0tFTl9mMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTIiXX0',
+			val='admin@app.limp.masaar.com',
+			hash='emailadmin@app.limp.masaar.comS0mE_V3Ry_STR0nG_P@SsW0rD__ANON_TOKEN_f00000000000000000000012',
 		)
 	]
 )
@@ -106,8 +106,7 @@ create_album = TEST(
 					{
 						'desc': {'ar_AE': 'some description here'},
 						'file': ATTR.FILE(types=['image/png', '*.png']),
-					},
-					{'file': ATTR.FILE(types=['image/jpeg', '*.jpg'])},
+					}
 				],
 			},
 		),
