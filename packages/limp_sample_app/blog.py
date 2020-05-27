@@ -45,7 +45,7 @@ class Blog(BaseModule):
 	}
 	unique_attrs = ['permalink']
 	extns = {
-		'user': EXTN(module='user', attrs=['name', 'bio']),
+		'user': EXTN(module='user', attrs=['name']),
 		'cat': EXTN(module='blog_cat'),
 	}
 	cache = [
